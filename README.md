@@ -8,4 +8,5 @@ Instructions to run:
   * Install numpy via `python3 -m pip install numpy`
   * Install dearpygui if using the Connect4.py file via `python3 -m pip install dearpygui`
   * Download whichever file you want and run `python3 Connect4.py` or `python3 server.py` respectively. 
+  * There is an Over The Air version that runs the code straight from GitHub. Always up-to date and less code on disk. Download and run `python3 Connect4-OTA.py`
   * Enjoy!
