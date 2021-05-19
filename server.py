@@ -11,14 +11,20 @@ class NonNegativeNumpyIndex:
     def __init__(self, numpyArray):
         self.array = numpyArray
     def __call__(self, rowOrSearchVal = None, col = None, value = None):
-        if (col != None) & ((rowOrSearchVal < 0) | (col < 0)):
-            raise Exception("IndexOutOfBounds: No negative numbers permitted.")
-        elif (value != None):
+        # print("A")
+        if (value != None):
+            print("D")
             self.array[rowOrSearchVal][col] = value
-        elif (rowOrSearchVal != None):
-            return (self.array == rowOrSearchVal).sum()
+        elif (col != None):
+            if ((rowOrSearchVal < 0) | (col < 0)):
+                print("B")
+                raise Exception("IndexOutOfBounds: No negative numbers permitted.")
+            else:
+                print("C")
+                return self.array[rowOrSearchVal][col]
         else:
-            return self.array[rowOrSearchVal][col]
+            print("E")
+            return (self.array == rowOrSearchVal).sum()
 
 def NormalGame(client1, client2):
     global inGamePacketQueue
@@ -27,6 +33,7 @@ def NormalGame(client1, client2):
     _a[0], _a[1] = client1, client2
     s.sendto(b'0', _a[0])
     s.sendto(b'1', _a[1])
+    print(map(-1))
     while True:
         for sock in range(2):
             while inGamePacketQueue[_a[sock]] == b'':
@@ -41,6 +48,7 @@ def NormalGame(client1, client2):
                     del inGamePacketQueue[_a[0]]
                     del inGamePacketQueue[_a[1]]
                     return 0
+            print("ok?")
             slot = inGamePacketQueue[_a[sock]]
             inGamePacketQueue[_a[sock]] = b''
             if slot == b'lg':
@@ -55,6 +63,7 @@ def NormalGame(client1, client2):
                 return 0
             try:
                 dcSlot = slot.decode()
+                print("Set")
                 map(int(dcSlot[0]), int(dcSlot[1]), sock)
                 stop = False
             except:
@@ -70,11 +79,12 @@ def NormalGame(client1, client2):
                 del inGamePacketQueue[_a[0]]
                 del inGamePacketQueue[_a[1]]
                 return 0
-            print(map)
+            print(map.array)
             for r in range(0, 6):
                 for c in range(0,7):
                     if map(r,c) != -1:
                         print((r,c))
+                        print(map(r,c))
                         try:
                             if (map(r,c) == map(r + 1,c) == map(r + 2,c) == map(r + 3,c)):
                                 stop = True
@@ -133,9 +143,11 @@ def NormalGame(client1, client2):
                         except:
                             pass
                         if (map(-1) == 0):
+                            stop = True
                             s.sendto(b'd', _a[(sock + 1) % 2])
                             s.sendto(b'd', _a[sock])
                             return 0
+                        print(map(-1))
                 if stop:
                     break
             s.sendto(slot, _a[(sock + 1) % 2])
