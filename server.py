@@ -7,9 +7,18 @@ import os
 
 inGame = False
 
+class NonNegativeNumpyIndex:
+    def __init__(self, numpyArray):
+        self.array = numpyArray
+    def __call__(self, row, col):
+        if (row < 0) | (col < 0):
+            raise Exception("IndexOutOfBounds: No negative numbers permitted.")
+        else:
+            return self.array[row][col]
+
 def NormalGame(client1, client2):
     global inGamePacketQueue
-    map = numpy.full(shape=(6,7), fill_value=-1)
+    map = NonNegativeNumpyIndex(numpy.full(shape=(6,7), fill_value=-1))
     _a = {}
     _a[0], _a[1] = client1, client2
     s.sendto(b'0', _a[0])
@@ -42,7 +51,7 @@ def NormalGame(client1, client2):
                 return 0
             try:
                 dcSlot = slot.decode()
-                map[int(dcSlot[0])][int(dcSlot[1])] = sock
+                map.array[int(dcSlot[0])][int(dcSlot[1])] = sock
                 stop = False
             except:
                 s.sendto(b'BANNED', _a[sock])
@@ -57,54 +66,65 @@ def NormalGame(client1, client2):
                 del inGamePacketQueue[_a[0]]
                 del inGamePacketQueue[_a[1]]
                 return 0
+            print(map)
             for r in range(0, 6):
                 for c in range(0,7):
-                    if map[r][c] != -1:
+                    if map(r,c) != -1:
+                        print((r,c))
                         try:
-                            if ((map[r][c] == map[r + 1][c]) & (map[r][c] == map[r + 2][c]) & (map[r][c] == map[r + 3][c])):
+                            if (map(r,c) == map(r + 1,c) == map(r + 2,c) == map(r + 3,c)):
                                 stop = True
+                                print(1)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r - 1][c]) & (map[r][c] == map[r - 2][c]) & (map[r][c] == map[r - 3][c])):
+                            if (map(r,c) == map(r - 1,c) == map(r - 2,c) == map(r - 3,c)):
                                 stop = True
+                                print(2)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r][c + 1]) & (map[r][c] == map[r][c + 2]) & (map[r][c] == map[r][c + 3])):
+                            if (map(r,c) == map(r,c + 1) == map(r,c + 2) == map(r,c + 3)):
                                 stop = True
+                                print(3)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r][c - 1]) & (map[r][c] == map[r][c - 2]) & (map[r][c] == map[r][c - 3])):
+                            if (map(r,c) == map(r,c - 1) == map(r,c - 2) == map(r,c - 3)):
                                 stop = True
+                                print(4)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r + 1][c + 1]) & (map[r][c] == map[r + 2][c + 2]) & (map[r][c] == map[r + 3][c + 3])):
+                            if (map(r,c) == map(r + 1,c + 1) == map(r + 2,c + 2) == map(r + 3,c + 3)):
                                 stop = True
+                                print(5)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r + 1][c - 1]) & (map[r][c] == map[r + 2][c - 2]) & (map[r][c] == map[r + 3][c - 3])):
+                            if (map(r,c) == map(r + 1,c - 1) == map(r + 2,c - 2) == map(r + 3,c - 3)):
                                 stop = True
+                                print(6)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r - 1][c - 1]) & (map[r][c] == map[r - 2][c - 2]) & (map[r][c] == map[r - 3][c - 3])):
+                            if (map(r,c) == map(r - 1,c - 1) == map(r - 2,c - 2) == map(r - 3,c - 3)):
+                                print(map(r - 1,c - 1))
                                 stop = True
+                                print(7)
                                 break
                         except:
                             pass
                         try:
-                            if ((map[r][c] == map[r - 1][c + 1]) & (map[r][c] == map[r - 2][c + 2]) & (map[r][c] == map[r - 3][c + 3])):
+                            if (map(r,c) == map(r - 1,c + 1) == map(r - 2,c + 2) == map(r - 3,c + 3)):
                                 stop = True
+                                print(8)
                                 break
                         except:
                             pass
