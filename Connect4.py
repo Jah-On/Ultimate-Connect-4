@@ -5,7 +5,7 @@ import socket
 import threading
 import numpy
 
-ADDR = ('localhost', 6543)
+ADDR = ('dpg-games.duckdns.org', 6543)
 running = True
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 inGame = False
