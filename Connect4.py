@@ -5,7 +5,7 @@ import socket
 import threading
 import numpy
 
-ADDR = ('dpg-games.duckdns.org', 6543)
+ADDR = ('localhost', 6543)
 running = True
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 inGame = False
@@ -14,7 +14,6 @@ def gameExit():
     global running
     running = False
     if inGame:
-        print("Sent leaving notice")
         try:
             s.sendto(b'lg', ADDR)
             s.shutdown(socket.SHUT_RDWR)
@@ -58,7 +57,6 @@ def NormalGameScreen():
     add_group("gameScreen", parent="##base")
     print(get_item_rect_size("##base"))
     size = (math.floor(get_item_rect_size("##base")[0] / 7)-6, math.floor(get_item_rect_size("##base")[1] / 6)-3)
-    print(size)
     for r in range(0,6):
         for c in range(0,7):
             add_button("##" + str(r) + str(c), width=size[0], height=size[1], callback=onNormalGameSpotClick)
@@ -83,7 +81,6 @@ def NormalGameScreen():
         if not running:
             return -1
         if op[0] == b'lg':
-            print("?")
             inGame = False
             configure_item("##noClick", show=True)
             add_window("##end", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)), width=int(get_item_rect_size("##base")[0] * 0.3), height=int(get_item_rect_size("##base")[1] * 0.3))
@@ -141,7 +138,6 @@ def reset():
 def onNormalGameSpotClick(sender, data):
     row = int(sender[2])
     col = int(sender[3])
-    print(str(row) + " " + str(col))
     for attempt in range(row, 6):
         try:
             if map[attempt + 1][col] != -1:
@@ -155,20 +151,16 @@ def onNormalGameSpotClick(sender, data):
     set_item_color("##" + str(row) + str(col), 22, color)
     set_item_color("##" + str(row) + str(col), 23, color)
     set_item_callback("##" + str(row) + str(col), None)
-    print(bytes(str(row) + str(col), "utf-8"))
     map[row][col] = int(player[0])
     s.sendto(bytes(str(row) + str(col), "utf-8"), ADDR)
-    print(map)
 
 
 def NormalGameResize():
-    p = time.time()
     size = (math.floor(get_item_rect_size("##base")[0] / 7)-6, math.floor(get_item_rect_size("##base")[1] / 6)-3)
     for r in range(0,6):
         for c in range(0,7):
             configure_item("##" + str(r) + str(c), width=size[0])
             configure_item("##" + str(r) + str(c), height=size[1])
-    print(time.time() - p)
 
 def homeScreenResize():
     configure_item("##cM", x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)))
