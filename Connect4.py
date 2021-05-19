@@ -69,16 +69,16 @@ def NormalGameScreen():
                 add_same_line()
     end()
     if player[0] == b'0':
-        add_window("##noClick", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_background=True, no_move=True, x_pos=0, y_pos=0, no_bring_to_front_on_focus=False, width=int(get_item_rect_size("##base")[0])-1, height=int(get_item_rect_size("##base")[1])-1, show=False)
+        add_window("##noClick", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_background=True, no_move=True, x_pos=0, y_pos=0, width=int(get_item_rect_size("##base")[0])-1, height=int(get_item_rect_size("##base")[1])-1, show=False)
         set_main_window_title("Your turn...")
     else:
-        add_window("##noClick", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_background=True, no_move=True, x_pos=0, y_pos=0, no_bring_to_front_on_focus=False, width=int(get_item_rect_size("##base")[0])-1, height=int(get_item_rect_size("##base")[1])-1, show=True)
+        add_window("##noClick", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_background=True, no_move=True, x_pos=0, y_pos=0, width=int(get_item_rect_size("##base")[0])-1, height=int(get_item_rect_size("##base")[1])-1, show=True)
         set_main_window_title("Opponent's turn...")
     end()
     while running:
         op = s.recvfrom(2)
         while (len(op[0]) == 0) & running:
-            time.sleep(0.01)
+            time.sleep(0.001)
             op = s.recvfrom(2)
         if not running:
             return -1
@@ -90,6 +90,7 @@ def NormalGameScreen():
             add_text("Opponent left.")
             add_button("Home", callback=reset)
             end()
+            configure_item("##noClick", no_bring_to_front_on_focus=True)
             return 0
         if op[0] == b'w':
             inGame = False
@@ -98,6 +99,7 @@ def NormalGameScreen():
             add_text("You won!")
             add_button("Home", callback=reset)
             end()
+            configure_item("##noClick", no_bring_to_front_on_focus=True)
             return 0
         if op[0] == b'l':
             inGame = False
@@ -106,6 +108,7 @@ def NormalGameScreen():
             add_text("Player " + str(oPone) + " won!")
             add_button("Home", callback=reset)
             end()
+            configure_item("##noClick", no_bring_to_front_on_focus=True)
             return 0
         op = op[0].decode()
         map[int(op[0])][int(op[1])] = oPone
