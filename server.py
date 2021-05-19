@@ -10,9 +10,11 @@ inGame = False
 class NonNegativeNumpyIndex:
     def __init__(self, numpyArray):
         self.array = numpyArray
-    def __call__(self, row, col):
+    def __call__(self, row, col, value = None):
         if (row < 0) | (col < 0):
             raise Exception("IndexOutOfBounds: No negative numbers permitted.")
+        elif (value != None):
+            self.array[row][col] = value
         else:
             return self.array[row][col]
 
@@ -51,7 +53,7 @@ def NormalGame(client1, client2):
                 return 0
             try:
                 dcSlot = slot.decode()
-                map.array[int(dcSlot[0])][int(dcSlot[1])] = sock
+                map(int(dcSlot[0]), int(dcSlot[1]), sock)
                 stop = False
             except:
                 s.sendto(b'BANNED', _a[sock])
