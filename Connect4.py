@@ -110,6 +110,15 @@ def NormalGameScreen():
             end()
             configure_item("##noClick", no_bring_to_front_on_focus=True)
             return 0
+        if op[0] == b'd':
+            inGame = False
+            configure_item("##noClick", show=True)
+            add_window("##end", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)), width=int(get_item_rect_size("##base")[0] * 0.3), height=int(get_item_rect_size("##base")[1] * 0.3))
+            add_text("It\'s a draw!")
+            add_button("Home", callback=reset)
+            end()
+            configure_item("##noClick", no_bring_to_front_on_focus=True)
+            return 0
         op = op[0].decode()
         map[int(op[0])][int(op[1])] = oPone
         set_item_color("##" + str(op), 21, oColor)

@@ -10,13 +10,15 @@ inGame = False
 class NonNegativeNumpyIndex:
     def __init__(self, numpyArray):
         self.array = numpyArray
-    def __call__(self, row, col, value = None):
-        if (row < 0) | (col < 0):
+    def __call__(self, rowOrSearchVal = None, col = None, value = None):
+        if (col != None) & ((rowOrSearchVal < 0) | (col < 0)):
             raise Exception("IndexOutOfBounds: No negative numbers permitted.")
         elif (value != None):
-            self.array[row][col] = value
+            self.array[rowOrSearchVal][col] = value
+        elif (rowOrSearchVal != None):
+            return (self.array == rowOrSearchVal).sum()
         else:
-            return self.array[row][col]
+            return self.array[rowOrSearchVal][col]
 
 def NormalGame(client1, client2):
     global inGamePacketQueue
@@ -130,6 +132,10 @@ def NormalGame(client1, client2):
                                 break
                         except:
                             pass
+                        if (map(-1) == 0):
+                            s.sendto(b'd', _a[(sock + 1) % 2])
+                            s.sendto(b'd', _a[sock])
+                            return 0
                 if stop:
                     break
             s.sendto(slot, _a[(sock + 1) % 2])
