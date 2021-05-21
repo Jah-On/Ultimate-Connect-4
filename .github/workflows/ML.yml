@@ -1,0 +1,22 @@
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Build for new Linux'
+        required: False
+        default: ''
+jobs:
+  binary:
+    runs-on: macos-latest
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.app" Connect4.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Connect4.app
+          path: dist/Connect4.app
