@@ -20,7 +20,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Newest Linux
+          tag-name: Newest Linux
           asset-name: 'Connect4.appImage'
           file: 'dist/Connect4.appImage'
   Linux-Older:
@@ -36,7 +36,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Older Linux
+          tag-name: Older Linux
           asset-name: 'Connect4.appImage'
           file: 'dist/Connect4.appImage'
 
@@ -53,7 +53,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Windows
+          tag-name: Windows
           asset-name: 'Connect4.exe'
           file: 'dist/Connect4.exe'
   MacOS-Big-Sur:
@@ -69,7 +69,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Big Sur
+          tag-name: Big Sur
           asset-name: 'Connect4.app'
           file: 'dist/Connect4.app'
   MacOS-Catalina:
@@ -85,6 +85,6 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Catalina
+          tag-name: Catalina
           asset-name: 'Connect4.app'
           file: 'dist/Connect4.app'
