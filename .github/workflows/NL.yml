@@ -11,4 +11,4 @@ jobs:
       - run: python3 -m pip install pip --upgrade
       - run: python3 -m pip install dearpygui
       - run: python3 -m pip install pyinstaller
-      - run: pyinstaller --onefile --clean -y -n "PyConnect-Client.appImage"
+      - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
