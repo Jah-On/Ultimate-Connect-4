@@ -86,5 +86,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag-name: Catalina
-          asset-name: 'Connect4.app'
-          file: 'dist/Connect4.app'
+          asset-name: 'Connect4.APP'
+          file: 'dist/Connect4.APP'
