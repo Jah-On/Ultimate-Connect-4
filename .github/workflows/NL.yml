@@ -16,27 +16,9 @@ jobs:
       - run: python3 -m pip install pyinstaller
       - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
       - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Connect4
-          path: dist/Connect4.appImage
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Rollling Release
-          draft: false
-          prerelease: false
       - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: djnicholson/release-action@v2.11
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: dist/Connect4.appImage
-          asset_name: Connect4.appImage
-          asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          asset-name: 'Connect4.appImage'
+          file: 'dist/Connect4.appImage'
