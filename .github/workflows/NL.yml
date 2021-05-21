@@ -15,3 +15,7 @@ jobs:
       - run: python3 -m pip install pyinstaller
       - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
       - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Connect4
+          path: dist/Connect4.appImage
