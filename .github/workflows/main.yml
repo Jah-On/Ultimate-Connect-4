@@ -7,7 +7,7 @@ on:
         required: False
         default: ''
 jobs:
-  Linux Newer:
+  Linux-Newer:
     runs-on: ubuntu-latest
     steps:
       - run: python3 -m pip install pip --upgrade
@@ -23,7 +23,7 @@ jobs:
           tag: Newest Linux
           asset-name: 'Connect4.appImage'
           file: 'dist/Connect4.appImage'
-  Linux Older:
+  Linux-Older:
     runs-on: ubuntu-18.04
     steps:
       - run: python3 -m pip install pip --upgrade
@@ -41,7 +41,7 @@ jobs:
           file: 'dist/Connect4.appImage'
 
   Windows:
-    runs-on: Windows-latest
+    runs-on: windows-latest
     steps:
       - run: python3 -m pip install pip --upgrade
       - run: python3 -m pip install dearpygui
@@ -56,7 +56,7 @@ jobs:
           tag: Windows
           asset-name: 'Connect4.exe'
           file: 'dist/Connect4.exe'
-  MacOS Big Sur:
+  MacOS-Big-Sur:
     runs-on: macos-11
     steps:
       - run: python3 -m pip install pip --upgrade
@@ -72,7 +72,7 @@ jobs:
           tag: Big Sur
           asset-name: 'Connect4.app'
           file: 'dist/Connect4.app'
-  MacOS Catalina:
+  MacOS-Catalina:
     runs-on: macos-latest
     steps:
       - run: python3 -m pip install pip --upgrade
