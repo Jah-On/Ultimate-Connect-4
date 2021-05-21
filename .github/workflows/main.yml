@@ -1,0 +1,90 @@
+name: ALL in one
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Build'
+        required: False
+        default: ''
+jobs:
+  Linux Newer:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
+      - name: Upload Release Asset
+        uses: djnicholson/release-action@v2.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Newest Linux
+          asset-name: 'Connect4.appImage'
+          file: 'dist/Connect4.appImage'
+  Linux Older:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
+      - name: Upload Release Asset
+        uses: djnicholson/release-action@v2.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Older Linux
+          asset-name: 'Connect4.appImage'
+          file: 'dist/Connect4.appImage'
+
+  Windows:
+    runs-on: Windows-latest
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.exe" Connect4.py
+      - name: Upload Release Asset
+        uses: djnicholson/release-action@v2.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Windows
+          asset-name: 'Connect4.exe'
+          file: 'dist/Connect4.exe'
+  MacOS Big Sur:
+    runs-on: macos-11
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.app" Connect4.py
+      - name: Upload Release Asset
+        uses: djnicholson/release-action@v2.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Big Sur
+          asset-name: 'Connect4.app'
+          file: 'dist/Connect4.app'
+  MacOS Catalina:
+    runs-on: macos-latest
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install numpy
+      - run: python3 -m pip install pyinstaller
+      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4.app" Connect4.py
+      - name: Upload Release Asset
+        uses: djnicholson/release-action@v2.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Catalina
+          asset-name: 'Connect4.app'
+          file: 'dist/Connect4.app'
