@@ -80,11 +80,11 @@ jobs:
       - run: python3 -m pip install numpy
       - run: python3 -m pip install pyinstaller
       - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
-      - run: pyinstaller --onefile --clean -y -n "Connect4.APP" Connect4.py
+      - run: pyinstaller --onefile --clean -y -n "Connect4" Connect4.py
       - name: Upload Release Asset
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag-name: Catalina
-          asset-name: 'Connect4.APP'
-          file: 'dist/Connect4.APP'
+          asset-name: 'Connect4'
+          file: 'dist/Connect4'
