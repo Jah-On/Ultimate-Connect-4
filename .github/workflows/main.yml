@@ -47,7 +47,7 @@ jobs:
       - run: python3 -m pip install dearpygui
       - run: python3 -m pip install numpy
       - run: python3 -m pip install pyinstaller
-      - run: wget https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py
+      - run: curl https://raw.githubusercontent.com/Jah-On/Ultimate-Connect-4/main/Connect4.py -O Connect4.py
       - run: pyinstaller --onefile --clean -y -n "Connect4.exe" Connect4.py
       - name: Upload Release Asset
         uses: djnicholson/release-action@v2.11
