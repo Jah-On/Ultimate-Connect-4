@@ -1,0 +1,16 @@
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Build for new Linux'
+        required: False
+        default: ''
+jobs:
+  binary:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install pyinstaller
+      - run: pyinstaller --onefile --clean -y -n "Connect4.appImage" Connect4.py
