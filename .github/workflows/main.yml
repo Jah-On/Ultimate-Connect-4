@@ -20,7 +20,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag-name: Newest Linux
+          tag-name: Newest-Linux
           asset-name: 'Connect4.appImage'
           file: 'dist/Connect4.appImage'
   Linux-Older:
@@ -36,7 +36,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag-name: Older Linux
+          tag-name: Older-Linux
           asset-name: 'Connect4.appImage'
           file: 'dist/Connect4.appImage'
 
@@ -69,7 +69,7 @@ jobs:
         uses: djnicholson/release-action@v2.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag-name: Big Sur
+          tag-name: Big-Sur
           asset-name: 'Connect4.app'
           file: 'dist/Connect4.app'
   MacOS-Catalina:
