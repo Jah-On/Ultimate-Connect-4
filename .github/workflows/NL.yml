@@ -1,0 +1,14 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build new Linux
+    steps:
+      - run: python3 -m pip install pip --upgrade
+      - run: python3 -m pip install dearpygui
+      - run: python3 -m pip install pyinstaller
+      - run: pyinstaller --onefile --clean -y -n "PyConnect-Client.appImage"
