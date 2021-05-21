@@ -1,4 +1,4 @@
-name: New Linux
+name: Latest LTS Linux
 on:
   workflow_dispatch:
     inputs:
