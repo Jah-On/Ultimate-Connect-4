@@ -11,7 +11,7 @@ Current features:
 
 Upcomming features:
   * Offline PvC (Player vs. Computer, two "players")
-  * 4x4! (84 spots, four players, 10 second turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing) 
+  * 4x4! (84 spots, four players, 5 second turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing) 
 
 Instructions to run:
   * You must have python 3.6 or newer to run the code.
