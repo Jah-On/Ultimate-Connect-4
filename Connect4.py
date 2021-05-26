@@ -5,11 +5,26 @@ import socket
 import threading
 import numpy
 
-# Sets address to game server
 ADDR = ('dpg-games.duckdns.org', 6543)
 running = True
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 inGame = False
+staringTurn = 0
+
+class NonNegativeNumpyIndex:
+    def __init__(self, numpyArray):
+        self.array = numpyArray
+    def __call__(self, rowOrSearchVal = None, col = None, value = None):
+        # print("A")
+        if (value != None):
+            self.array[rowOrSearchVal][col] = value
+        elif (col != None):
+            if ((rowOrSearchVal < 0) | (col < 0)):
+                raise Exception("IndexOutOfBounds: No negative numbers permitted.")
+            else:
+                return self.array[rowOrSearchVal][col]
+        else:
+            return (self.array == rowOrSearchVal).sum()
 
 def gameExit():
     global running
@@ -20,6 +35,106 @@ def gameExit():
             s.shutdown(socket.SHUT_RDWR)
         except:
             pass
+
+def twoOffline():
+    global map
+    map = NonNegativeNumpyIndex(numpy.full(shape=(6,7), fill_value=-1))
+    set_resize_callback(NormalBoardResize, handler="##base")
+    configure_item("##cM", show=False)
+    add_group("gameScreen", parent="##base")
+    size = (math.floor(get_item_rect_size("##base")[0] / 7)-6, math.floor(get_item_rect_size("##base")[1] / 6)-3)
+    for r in range(0,6):
+        for c in range(0,7):
+            add_button("##" + str(r) + str(c), width=size[0], height=size[1], callback=onTwoOfflineGameSpotClick)
+            set_item_color("##" + str(r) + str(c), 21, [200,200,200])
+            set_item_color("##" + str(r) + str(c), 22, [190,190,190])
+            set_item_color("##" + str(r) + str(c), 23, [190,190,190])
+            if c != 6:
+                add_same_line()
+    end()
+    global staringTurn
+    staringTurn = (staringTurn + 1) % 2
+    global turn
+    turn = staringTurn
+    set_main_window_title("Player " + str(turn + 1) +"\'s turn...")
+    stop = False
+    while True:
+        tempTurn = turn
+        while tempTurn == turn:
+            time.sleep(0.008)
+        for r in range(0, 6):
+            for c in range(0,7):
+                if map(r,c) != -1:
+                    try:
+                        if (map(r,c) == map(r + 1,c) == map(r + 2,c) == map(r + 3,c)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r - 1,c) == map(r - 2,c) == map(r - 3,c)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r,c + 1) == map(r,c + 2) == map(r,c + 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r,c - 1) == map(r,c - 2) == map(r,c - 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r + 1,c + 1) == map(r + 2,c + 2) == map(r + 3,c + 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r + 1,c - 1) == map(r + 2,c - 2) == map(r + 3,c - 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r - 1,c - 1) == map(r - 2,c - 2) == map(r - 3,c - 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    try:
+                        if (map(r,c) == map(r - 1,c + 1) == map(r - 2,c + 2) == map(r - 3,c + 3)):
+                            stop = True
+                            break
+                    except:
+                        pass
+                    if (map(-1) == 0):
+                        stop = True
+                        add_window("##end", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)), width=int(get_item_rect_size("##base")[0] * 0.3), height=int(get_item_rect_size("##base")[1] * 0.3))
+                        add_text("It\'s a draw!")
+                        add_button("Home", callback=reset)
+                        end()
+                        return 0
+                if stop:
+                    break
+            if stop:
+                for r in range(0,6):
+                    for c in range(0,7):
+                        if get_item_callback("##" + str(r) + str(c)) != None:
+                            set_item_color("##" + str(r) + str(c), 21, [200,200,200])
+                            set_item_color("##" + str(r) + str(c), 22, [200,200,200])
+                            set_item_color("##" + str(r) + str(c), 23, [200,200,200])
+                        set_item_callback("##" + str(r) + str(c), None)
+                add_window("##end", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)), width=int(get_item_rect_size("##base")[0] * 0.3), height=int(get_item_rect_size("##base")[1] * 0.3))
+                add_text("Player " + str(turn + 1) + " won!")
+                add_button("Home", callback=reset)
+                end()
+                return 0
 
 def NormalGameScreen():
     global inGame
@@ -54,9 +169,8 @@ def NormalGameScreen():
     while not does_item_exist("##base") or not is_dearpygui_running():
         time.sleep(0.004)
     time.sleep(1)
-    set_resize_callback(NormalGameResize, handler="##base")
+    set_resize_callback(NormalBoardResize, handler="##base")
     add_group("gameScreen", parent="##base")
-    print(get_item_rect_size("##base"))
     size = (math.floor(get_item_rect_size("##base")[0] / 7)-6, math.floor(get_item_rect_size("##base")[1] / 6)-3)
     for r in range(0,6):
         for c in range(0,7):
@@ -103,7 +217,7 @@ def NormalGameScreen():
             inGame = False
             configure_item("##noClick", show=True)
             add_window("##end", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)), width=int(get_item_rect_size("##base")[0] * 0.3), height=int(get_item_rect_size("##base")[1] * 0.3))
-            add_text("Player " + str(oPone) + " won!")
+            add_text("Player " + str(oPone + 1) + " won!")
             add_button("Home", callback=reset)
             end()
             configure_item("##noClick", no_bring_to_front_on_focus=True)
@@ -155,24 +269,49 @@ def onNormalGameSpotClick(sender, data):
     map[row][col] = int(player[0])
     s.sendto(bytes(str(row) + str(col), "utf-8"), ADDR)
 
+def onTwoOfflineGameSpotClick(sender, data):
+    global turn
+    color = {0:[255,0,0], 1:[0,0,255]}
+    row = int(sender[2])
+    col = int(sender[3])
+    for attempt in range(row, 6):
+        try:
+            if map(attempt + 1,col) != -1:
+                row = attempt
+                break
+        except:
+            row = 5
+    set_item_color("##" + str(row) + str(col), 21, color[turn])
+    set_item_color("##" + str(row) + str(col), 22, color[turn])
+    set_item_color("##" + str(row) + str(col), 23, color[turn])
+    set_item_callback("##" + str(row) + str(col), None)
+    map(row, col, turn)
+    turn = (turn + 1) % 2
+    time.sleep(0.008)
+    set_main_window_title("Player " + str(turn + 1) +"\'s turn...")
 
-def NormalGameResize():
+def NormalBoardResize():
     size = (math.floor(get_item_rect_size("##base")[0] / 7)-6, math.floor(get_item_rect_size("##base")[1] / 6)-3)
     for r in range(0,6):
         for c in range(0,7):
             configure_item("##" + str(r) + str(c), width=size[0])
             configure_item("##" + str(r) + str(c), height=size[1])
 
+# To be reused later
 def homeScreenResize():
-    configure_item("##cM", x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)))
-    configure_item("##cM", y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)))
-    configure_item("##cM", width=int(get_item_rect_size("##base")[0] * 0.2))
-    configure_item("##cM", height=int(get_item_rect_size("##base")[0] * 0.2))
-    configure_item("Classic multiplayer", width=int(get_item_rect_size("##base")[0] * 0.2))
-    configure_item("Classic multiplayer", height=int(get_item_rect_size("##base")[0] * 0.2))
+    pass
+    # configure_item("##cM", x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)))
+    # configure_item("##cM", y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)))
+    # configure_item("##cM", width=int(get_item_rect_size("##base")[0] * 0.2))
+    # configure_item("##cM", height=int(get_item_rect_size("##base")[0] * 0.2))
+    # configure_item("Classic multiplayer", width=int(get_item_rect_size("##base")[0] * 0.2))
+    # configure_item("Classic multiplayer", height=int(get_item_rect_size("##base")[0] * 0.2))
 
-def spawner():
-    threading.Thread(target=NormalGameScreen).start()
+def spawner(sender, data):
+    if data == 2:
+        threading.Thread(target=NormalGameScreen).start()
+    elif data == 1:
+        threading.Thread(target=twoOffline).start()
 
 set_main_window_title("Ultimate Connect Four")
 set_style_window_border_size(0.0)
@@ -183,8 +322,10 @@ set_resize_callback(homeScreenResize, handler="##base")
 # x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.3)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[1] * 0.3)/2)),
 set_exit_callback(gameExit)
 end()
-add_window("##cM", no_close=True, no_collapse=True, no_title_bar=True,no_resize=True, no_move=True, x_pos=int((get_item_rect_size("##base")[0] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)), y_pos=int((get_item_rect_size("##base")[1] / 2) - ((get_item_rect_size("##base")[0] * 0.2)/2)), no_bring_to_front_on_focus=False, width=int(get_item_rect_size("##base")[0] * 0.2), height=int(get_item_rect_size("##base")[0] * 0.2))
-add_button("Classic multiplayer", callback=spawner, width=int(get_item_rect_size("##base")[0] * 0.2), height=int(get_item_rect_size("##base")[0] * 0.2))
+add_group("##cM", parent="##base")
+add_button("Offline PvP", callback=spawner, callback_data=1, width=300, height=300)
+add_same_line()
+add_button("Classic multiplayer", callback=spawner, callback_data=2, width=300, height=300)
 end()
 
 if __name__ == "__main__":
