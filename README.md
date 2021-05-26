@@ -12,4 +12,4 @@ Instructions to run:
   * Download whichever file you want and run `python3 Connect4.py` or `python3 server.py` respectively. 
   * There is an Over The Air version that runs the code straight from GitHub. Always up-to date and less code on disk. Download and run `python3 Connect4-OTA.py`
   * Enjoy!
-  * There are now binaries for each desktop OS! Click on "Releases" on the right hand side, find the tag with your platform, click the dropdown for the files, click the first one, wait for it to download, and run*!   **On some platforms, you may need to enable execution of the file.*
+  * There are now binaries for each desktop OS (Except Big Sur at the moment)! Click on "Releases" on the right hand side, find the tag with your platform, click the dropdown for the files, click the first one, wait for it to download, and run*!   **On some platforms, you may need to enable execution of the file.*
