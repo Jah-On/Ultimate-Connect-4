@@ -5,6 +5,14 @@ Please star and follow this project!
 
 NOTICE: If you connect to the game server hosted by Jah-On and attempt to send malformed data or spam the server, your IP address will be permanately banned by the server. Don't test it. Happy board gaming!
 
+Current features:
+  * Offline PvP (Player vs. Player, two)
+  * Classic Online PvP (42 spots, two players, taking turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing)
+
+Upcomming features:
+  * Offline PvC (Player vs. Computer, two "players")
+  * 4x4! (84 spots, four players, 10 second turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing) 
+
 Instructions to run:
   * You must have python 3.6 or newer to run the code.
   * Install numpy via `python3 -m pip install numpy`
