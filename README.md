@@ -11,7 +11,7 @@ Current features:
 
 Upcomming features:
   * Offline PvC (Player vs. Computer, two "players")
-  * 4x4! (84 spots, four players, 5 second turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing) 
+  * 4x4! (90 spots, four players, 5 second turns, first with four in a row vertically, horizontally, or diagonally, and no spot clearing) 
 
 Instructions to run:
   * There are now binaries for each desktop OS (Except Big Sur at the moment)! You do not need to install anything to run it. Click on "Releases" on the right hand side, find the tag with your platform, click the "Assets" dropdown for the files, click the first one, wait for it to download, and run*!   **On some platforms, you may need to enable execution of the file.*
